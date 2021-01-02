@@ -2,19 +2,14 @@ import Vue from 'vue'
 import App from './App.vue'
 import VueRouter from 'vue-router'
 import router from "./router"
+import Color from "./util/color"
 
 Vue.use(VueRouter)
 
 Vue.config.productionTip = false
 
 
-class Color {
-  constructor(color, time, next){
-    this.color = color;
-    this.time = time;
-    this.next = next;
-  }
-}
+
 
 var red = new Color('red', 10);
 var yellowR = new Color('yellow', 3);
@@ -45,7 +40,7 @@ new Vue({
       var color_url = window.location.hash.split('/')[1];
       
       if (color_url == ""){
-        changeColor(red)
+        router.push("red")
       }else{
         changeColor(colorMap.get(color_url))
       }
@@ -73,19 +68,7 @@ new Vue({
 
 
 
-function flashing(){
 
-  var time = 0
-  var active = document.getElementById(window.location.hash.split('/')[1])
-
-  for(time; time<2500; time=time+500){
-    setTimeout(() => active.style.opacity = '1', time)
-    time=time+500
-    setTimeout(() => active.style.opacity = '0.25', time)
-  }
-
-  
-}
 
 
 function changeColor(color_obj){
@@ -111,7 +94,7 @@ function changeColor(color_obj){
     }
 
 
-    setTimeout(flashing, (time-3)*1000)
+    setTimeout(color_obj.flashing, (time-3)*1000)
     setTimeout(function() {
       router.push(next.color)
     },time*1000)
